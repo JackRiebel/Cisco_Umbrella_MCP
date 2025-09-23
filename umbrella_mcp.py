@@ -86,8 +86,6 @@ class TaskResult(BaseModel):
     task_id: Optional[str] = None
     status: Optional[str] = None
 
-# --- NEW Pydantic Models for extended functionalities ---
-
 class TunnelGroup(BaseModel):
     id: str
     name: Optional[str] = None
@@ -112,7 +110,7 @@ class DNSPolicyRule(BaseModel):
 class UserDetail(BaseModel):
     id: str
     username: Optional[str] = None
-    email: Optional[str] = None # Fixed syntax error here
+    email: Optional[str] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     role_ids: Optional[List[str]] = None
@@ -132,7 +130,7 @@ class Group(BaseModel):
 
 class APIKey(BaseModel):
     id: str
-    key_prefix: Optional[str] = None # Full key usually not returned for security
+    key_prefix: Optional[str] = None
     description: Optional[str] = None
     created_at: Optional[str] = None
     expires_at: Optional[str] = None
@@ -174,7 +172,7 @@ async def make_api_request(method: str, endpoint: str, params: Optional[Dict] = 
         if e.response.status_code == 401:
             return {"error": "Authentication failed. Check your API token."}
         elif e.response.status_code == 429:
-            await asyncio.sleep(1) # Simple retry logic
+            await asyncio.sleep(1)
             return {"error": "Rate limit exceeded. Please try again later."}
         else:
             return {"error": f"API error: {e.response.status_code} - {e.response.text}"}
@@ -226,8 +224,6 @@ async def get_enforcement_events(params: Optional[Dict[str, Any]] = None) -> str
     if not events:
         return json.dumps({"message": "No enforcement events found."}, indent=2)
     return json.dumps(events, indent=2)
-
-# Additional Umbrella API functions
 
 @mcp.tool()
 async def get_network_devices(params: Optional[Dict[str, Any]] = None) -> str:
@@ -354,12 +350,9 @@ async def get_logs(params: Optional[Dict[str, Any]] = None) -> str:
 async def run_umbrella_task(task_type: str, params: Dict[str, Any]) -> str:
     """
     Run an Umbrella automation task if applicable.
-
     Note: Umbrella API may not support generic task execution; this is a placeholder.
     """
     return json.dumps({"message": "Umbrella API does not support generic task execution via this endpoint."}, indent=2)
-
-# --- NEW FUNCTIONS for extended functionalities ---
 
 @mcp.tool()
 async def get_tunnel_groups(params: Optional[Dict[str, Any]] = None) -> str:
@@ -655,4 +648,69 @@ async def remove_user_from_group(group_id: str, user_id: str) -> str:
     return json.dumps({"message": f"User {user_id} removed from group {group_id} successfully."}, indent=2)
 
 @mcp.tool()
-async def get_api_keys(params: Optional[Dict
+async def get_api_keys(params: Optional[Dict[str, Any]] = None) -> str:
+    """
+    Retrieve information about API keys. (Note: Full keys are usually not returned for security).
+    """
+    data = await make_api_request("GET", "api-keys/v1/keys", params=params)
+    if "error" in data:
+        return json.dumps({"error": data["error"]}, indent=2)
+    keys = [APIKey(
+        id=str(key.get("id")),
+        key_prefix=key.get("keyPrefix"),
+        description=key.get("description"),
+        created_at=key.get("createdAt"),
+        expires_at=key.get("expiresAt"),
+        status=key.get("status")
+    ).dict() for key in data.get("apiKeys", [])]
+    if not keys:
+        return json.dumps({"message": "No API keys found."}, indent=2)
+    return json.dumps(keys, indent=2)
+
+@mcp.tool()
+async def create_api_key(key_data: Dict[str, Any]) -> str:
+    """
+    Create a new API key.
+    `key_data` should contain 'description', 'expiresAt', etc.
+    """
+    data = await make_api_request("POST", "api-keys/v1/keys", data=key_data)
+    if "error" in data:
+        return json.dumps({"error": data["error"]}, indent=2)
+    return json.dumps(data, indent=2)
+
+@mcp.tool()
+async def update_api_key(key_id: str, updates: Dict[str, Any]) -> str:
+    """
+    Update an existing API key.
+    `updates` should contain fields to be updated (e.g., 'description', 'status').
+    """
+    data = await make_api_request("PUT", f"api-keys/v1/keys/{key_id}", data=updates)
+    if "error" in data:
+        return json.dumps({"error": data["error"]}, indent=2)
+    return json.dumps(data, indent=2)
+
+@mcp.tool()
+async def delete_api_key(key_id: str) -> str:
+    """
+    Delete an API key.
+    """
+    data = await make_api_request("DELETE", f"api-keys/v1/keys/{key_id}")
+    if "error" in data:
+        return json.dumps({"error": data["error"]}, indent=2)
+    return json.dumps({"message": f"API key {key_id} deleted successfully."}, indent=2)
+
+@mcp.resource("greeting: //{name}")
+def greeting(name: str) -> str:
+    """
+    Greet a user by name.
+
+    Args:
+        name: The name to include in the greeting.
+
+    Returns:
+        A greeting message.
+    """
+    return f"Hello {name}!"
+
+if __name__ == "__main__":
+    mcp.run(transport="stdio") # Use stdio for Claude Desktop integration
