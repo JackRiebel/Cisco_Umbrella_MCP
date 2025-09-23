@@ -1,1 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
 
+# Environment variables
+.env
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+.pytest_cache/
+coverage/
+*.coverage
+.coverage.*
+
+# Logs
+*.log
+
+# Miscellaneous
+*.DS_Store
+*.swp
+*.swo
