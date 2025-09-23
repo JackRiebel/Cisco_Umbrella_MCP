@@ -1,1 +1,33 @@
+toml
+[project]
+name = "umbrella-mcp"
+version = "0.1.0"
+description = "A Python-based Model Context Protocol (MCP) server for Cisco Umbrella"
+authors = [
+    { name = "Jack Riebel", email = "jack@example.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=0.1.0",
+    "httpx>=0.23.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=0.21.0"
+]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.18.0",
+    "flake8>=5.0.0",
+    "black>=22.0.0"
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
