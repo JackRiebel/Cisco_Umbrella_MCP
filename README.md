@@ -2,7 +2,6 @@
 
 Umbrella MCP is a Python-based Model Context Protocol (MCP) server for Cisco Umbrella. It provides tools for querying the Cisco Umbrella API to discover, monitor, and manage your Umbrella security environment.
 
-**DISCLAIMER**: THIS IS CURRENTLY BUILT FOR USE IN A DEVNET ENVIRONMENT FOR POC. SSL VERIFICATION IS DISABLED. THIS IS NOT RECOMMENDED FOR PRODUCTION USE.
 
 ## Features
 
