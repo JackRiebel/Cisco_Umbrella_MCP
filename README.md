@@ -60,7 +60,7 @@ Add the following configuration to claude_desktop_config.json:
 {
   "mcpServers": {
     "Umbrella_MCP": {
-      "command": "/path/to/Umbrella_MCP/.venv/bin/python",
+      "command": "/path/to/Umbrella_MCP/.venv/bin/fastmcp",
       "args": [
         "/path/to/Umbrella_MCP/umbrella_mcp.py"
       ]
