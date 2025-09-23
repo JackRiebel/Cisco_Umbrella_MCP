@@ -1,14 +1,5 @@
 # Umbrella MCP
 
-Local MCP Server for Cisco Umbrella (Not intended for production use)
-
-### License
-
-[MIT License](LICENSE)
-
-# JackRiebel/Umbrella_MCP
-
-
 ## Features
 
 - **Organization Management**: Retrieve and manage Umbrella organizations
