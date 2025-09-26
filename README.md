@@ -23,9 +23,10 @@ Umbrella MCP is a Python-based Model Context Protocol (MCP) server for Cisco Umb
 ```
 
 Create a virtual environment and activate it:
+```
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
+```
 
 Install dependencies:
 ```
