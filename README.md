@@ -18,8 +18,8 @@ Umbrella MCP is a Python-based Model Context Protocol (MCP) server for Cisco Umb
 1. Clone the repository:
 
 ```
-   git clone https://github.com/JackRiebel/Umbrella_MCP.git
-   cd Umbrella_MCP
+   git clone https://github.com/JackRiebel/Cisco_Umbrella_MCP.git
+   cd Cisco_Umbrella_MCP
 ```
 
 Create a virtual environment and activate it:
